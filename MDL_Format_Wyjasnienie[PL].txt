@@ -3,7 +3,7 @@
 //============©Filson//
 // Główne Parametry
 //=======================//
-Version { //wersja modelu
+Version { // wersja modelu
     FormatVersion 800, //
 }
 
@@ -327,7 +327,7 @@ ParticleEmitter "one" { //emitery cząsteczek (wszytskie dymy, ognie, efekty wiz
         0: 0,
         1: 1,
     }
-    Latitude 2 { // wysokosć
+    Latitude 2 { // wysokość
         DontInterp,
         0: 0,
         1: 1,
@@ -352,19 +352,21 @@ ParticleEmitter "one" { //emitery cząsteczek (wszytskie dymy, ognie, efekty wiz
     }
 }
 
-ParticleEmitter2 "SmallBlastDebris" { //drugi emiter cząsteczek
+ParticleEmitter2 "SmallBlastDebris" { // drugi emiter cząsteczek
     //MA PARAMETRY OBIEKTU
     SortPrimsFarZ, //sortuj Z
     Unshaded, //brak cienia
     Unfogged, //brak mgły 
-    static Speed 440, // prędkość cząsteczek
-    static Variation 0, // różnorodność
-    static Latitude 55, // wysokość nad zemią
+    static Speed 440, // prędkość cząsteczek || im wyższa wartość tym cząsteczki szybciej są emitowane od źródła
+                      //Wartość ujemna powoduje lot cząsteczek w przeciwnym kie
+    static Variation 0, // różnorodność || działa z parametrem 'static Speed' 
+    static Latitude 55, // wysokość czyli kąt odchylenia cząsteczek || im wyższa wartość tym większy kąt odchylenia
+                        //Przyjmując wartość "0" cząsteczki by leciały w lini prostej
     static Gravity 3, // grawitacja
     // jeżeli nie statyczne do dynamiczne
     Squirt, // spray? rozpraszanie się cząsteczek?
     LifeSpan 0.71, // żywotność
-    EmissionRate 4 { // frekwencja 
+    EmissionRate 4 { // częstotliwość 
         DontInterp,
         65033: 0,
         65333: 22,
@@ -373,8 +375,9 @@ ParticleEmitter2 "SmallBlastDebris" { //drugi emiter cząsteczek
     }
     static Width 24, // szerokość
     static Length 24, // długość
-    // jeżeli nie statyczne do dynamiczne
-    Blend,
+    // Początkowe parametry 0/0 dają nam prostokąt o zerowej szerokości i długości
+    // Jeżeli nie statyczne do dynamiczne
+    Blend, // spływa się z teksturą pod spodem || Ten filter najczęściej generuje efekty nieświecące, takie jak dym, krew lub obiekty fizyczne.
     Rows 1, // dzielą obraz na wiersze i kolumny. Jest to przeznaczone do animowanych tekstur.
             // Przykład użycia znajduje się w teksturze: „Textures\Clouds8x8.blp”. Należy ustawić liczbę wierszy na 8, a kolumn na 8. Spowoduje to wygenerowanie odpowiednich cząsteczek i umożliwi animację.
     Columns 1, // kolumny
@@ -389,9 +392,8 @@ ParticleEmitter2 "SmallBlastDebris" { //drugi emiter cząsteczek
         Color { 0, 0.309804, 0.658824 },
         Color { 0, 0, 0 },
     },
-    Alpha {255, 255, 0}, //przeźroczystość
-    ParticleScaling {5, 5, 5}, // skalowanie
-    
+    Alpha {255, 255, 0}, //przeźroczystość 
+    ParticleScaling {5, 5, 5}, // skalowanie    
     LifeSpanUVAnim {0, 0, 1}, //żywotność animowanej tekstury
     DecayUVAnim {0, 0, 1}, // animowana tekstura zwłok
     TailUVAnim {0, 0, 1}, //  podobnie ale ogon
@@ -412,7 +414,7 @@ RibbonEmitter "BlizRibbon01" { //emiter wstążek
         1000: 1,
     }
     EmissionRate 35,
-    LifeSpan 0.35, //время жизни
+    LifeSpan 0.35, //żywotność || czas, przez jaki będzie istnieć emitowana cząsteczka. Jeśli wartość jest równa 0, cząstkczki nie pojawią sie.
     Gravity 2, //grawitacja
     Rows 1, //patrz emiter cząsteczek
     Columns 1, //patrz emiter cząsteczek
@@ -440,3 +442,4 @@ EventObject "SNDxDOLS" { //sound1, name - identyfikator ciągu, który można zn
 }
 
 //Filson//
+
