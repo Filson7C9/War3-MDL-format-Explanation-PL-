@@ -1,0 +1,442 @@
+// komentarz
+
+//============©Filson//
+// Główne Parametry
+//=======================//
+Version { //wersja modelu
+    FormatVersion 800, //
+}
+
+Model "Name" { // nazwa modelu
+    NumGeosets 1, // ilość geosetów
+    NumGeosetAnims 2, // ilość widzialnych animacji 
+    NumLights 1, // ilość źródeł światła
+    NumHelpers 1, // coś jak bone "pomagają" w animacji
+    NumBones 5, // ilość kości 
+    NumAttachments 3, // ilość "przyczepów" w szkielecie modelu. Coś do czego można dołączyć efekt. Np: latający orb
+    NumParticleEmitters 1, // ilość źródeł emiterów cząsteczek
+    NumParticleEmitters2 1, // ilość źródeł emiterów cząsteczek 2
+    NumRibbonEmitters 1, // ilość emiterów wstążek
+    NumEvents 2, // ilość eventów (np: dźwięk podczas umierania, ślady stóp itp.) 
+    BlendTime 150, // przejście pomiędzy jedną a drugą animacją
+    MinimumExtent { -27.125, -23.125, 0.225586 }, // minimalne granice modelu
+    MaximumExtent { 22, 24.25, 98.5 }, // maksymalne granice modelu
+    BoundsRadius 34.4232, // promień, w którym model jest nadal widoczny, gdy środek znajduje się poza ekranem
+}
+Sequences 2 { //sekwencje
+    Anim "Stand" { // nazwa animacji 
+        Interval { 0, 3333 },  // czas trwania animacji 
+        Rarity 1.5, // częstotliwość animacji
+        MoveSpeed 80, // szybkość ruchu
+        NonLooping, // animacja się nie zapętla
+        MinimumExtent { -27.125, -23.125, 0.225586 }, //minimalna rozpiętość 
+        MaximumExtent { 22, 24.25, 98.5 }, //maksymalna rozpiętość dokąd może sięgać animacja
+        BoundsRadius 34.4232, //promień, w którym animacja jest nadal widoczna, gdy środek znajduje się poza ekranem
+    }
+    Anim "Walk" {
+    //...
+    }
+}
+
+GlobalSequences 2 { // animacje globalne (bez nazwy) np powiewająca flaga itp.
+    Duration 967, // dlugość animacji 0
+    Duration 467, // długość animacji 1
+    // itd
+}
+
+//==============©Filson//
+// 2D obrazy
+//=======================//
+Textures 1 { //Tekstury
+    Bitmap { // является изображением
+        Image "Textures\Goldmine.blp", //scieżka w archiwum
+        WrapWidth, //szerokość oplatania modelu
+        WrapHeight, //wysokość oplatania modelu
+        ReplaceableId 1, // Id wymiennej Tekstury np: team color, team glow
+    }
+}
+
+Materials 2 { //materiały
+    Material { //pierwszy Material
+        ConstantColor, // stały kolor, Model nie jest narażony na zmianę koloru w zależności od pory dnia
+        SortPrimsFarZ, // nie mam pojęcia, chyba chodzi o sortowanie meshu od najdalszego
+        FullResolution, // najwyższa roździelczość, używamny między innymi podczas ekranu ładowania
+        PriorityPlane 2, // generuje pierwszeństwo renderowania, 
+                         //im wyższa liczba, tym później zostanie ona wyrenderowana
+
+
+        
+        Layer { //warstwy
+            FilterMode None, // tryb filtrowania - brak
+            Unshaded, //materiał jest w pełni oświetlony i ignoruje źródła światła
+            Unfogged, //materiał jest w pełni oświetlony i ignoruje mgłę
+            static TextureID 0, //ID tekstury
+            TwoSided, // obustronne wyświetlanie tekstury
+            SphereEnvMap, //nie wiem co to robi...
+            NoDepthTest,
+            NoDepthSet,
+            Alpha 2 { // kanał Alpha
+                Linear, // typ linearny
+                0: 0, // numer klatki i wykorzystanie alfa w ułamkach (od 1 do 0)
+                1000: 1,
+            }
+           
+            //static Alpha 0.7,
+        }
+        
+        Layer { //druga warstwa
+            TextureID 2 { //tekstury mogą zawierać animacje
+                DontInterp, // typ animacji
+                0: 0,
+                1000: 1,
+            }
+        }
+        
+    }
+    
+    Material { //drugi materiał
+    }
+}
+
+TextureAnims 1 { //animacja tekstury
+    TVertexAnim { //animacja wierzchołków tekstury
+        Translation 2 { //pozycja
+            DontInterp, //typ
+            0: { 0, 0, 0 },
+            1: { 1, 1, 1 },
+        }
+        //itp...
+    }
+}
+
+//=============©Filson//
+// Mesh, Wierzchołki i Grupy
+//=======================//
+Geoset { //	pierwszy Geoset (1)
+    Vertices 4 { //ilość wierzchołków
+        { -22.75, 12.9375, 42.25 },
+        { -13.4375, 12.9375, 43 },
+        { -22.75, 18.75, 41 },
+        { -13.375, 18.75, 41.75 },
+    }
+    Normals 4 { //normals (tylna i przednia strona modelu)
+        { -0.172104, -0.93708, -0.303745 },
+        { 0.625556, -0.752452, -0.206145 },
+        { -0.807936, 0.334689, -0.484998 },
+        { 0.459442, 0.748768, -0.477765 },
+    }
+    TVertices 4 { //ilość wierzchołków tekstury
+        { 0, 0 },
+        { 0, 0.85 },
+        { 1, 0 },
+        { 1, 1 },
+    }
+    VertexGroup { //Poligony - zbityk wierzchołków (Mesh)
+        0, //4 wierzchołki poligonu
+        0, //0
+        0,
+        0,
+    }
+    Faces 1 6 { //sciany(1): ilość wierzchołków 6
+        Triangles {
+            { 0, 1, 2, 3, 2, 1 },
+        }
+    }
+    Groups 1 1 { // podział na grupy i kości
+        Matrices { 0 }, //znaczy, że grupa 0 łączy się z kością "Chest"(id 0)
+        //Matrices { 0, 1 }, //grupa  1 łączy się z kością  "Chest"(id 0) i "Origin"(id 1)
+		// itd
+        // tak by było, gdyby istniała druga grupa wierzchołków.
+        // wtedy powyżej należy napisać „Grupy 2 3”
+    }
+    
+    MinimumExtent { -24.875, 12.9375, 41 }, //mininalna granica meshu
+    MaximumExtent { -13.375, 24.25, 98.5 }, //maksymalna granica meshu
+    BoundsRadius 29.1094, ///promień, w którym animacja jest nadal widoczna, gdy środek znajduje się poza ekranem
+    Anim { //1 animacja
+        MinimumExtent { -24.875, 12.9375, 41 },
+        MaximumExtent { -13.375, 24.25, 98.5 },
+        BoundsRadius 29.1094,
+    }
+    Anim {
+        //...
+    }
+   
+    MaterialID 0, //ID Materiału
+    SelectionGroup 0, //grupa selekcji
+}
+
+
+Geoset { //drugi geoset 
+    //...
+}
+
+//=============©Filson//
+// kości oraz animacje
+//=======================//
+//typ animacji: (prosty)DontInterp,Linear, (c InTan/OutTan)Hermite,Bezier
+//Filtry None,Transparent,Blend,Additive,AddAlpha,Modulate
+
+//PARAMETRY OBIEKTÓW:
+    ObjectId 0, // id OBIEKTu
+    Parent 0, // id parent
+    Billboarded, // zawsze kamerą do ekranu
+    BillboardedLockX, //to samo tylko wzdłuż osi..
+    BillboardedLockY, //to samo tylko wzdłuż osi..
+    BillboardedLockZ, //to samo tylko wzdłuż osi..
+    CameraAnchored, //закрепленная камера
+    GeosetId 0, // id nawiązje do którego geosetu
+    DontInherit { Translation, Rotation, Scaling }, //pozycja, rotacja, skalowanie
+    //работает от родителя
+    //dwa niezbędne parametry: DontInherit { Translation },
+    
+    Translation 2 { //ruch animacji
+        Hermite, //typ
+        0: { 0, 0, -17.0679 }, // X,Y,Z
+            InTan { 0, 0, -17.0679 }, //wejście
+            OutTan { 0, 0, -3.75045 }, //wyjście z animacji dosłownie przejścia z jednej do drugiej
+        1000: { 0, 0, -20.8183 },
+            InTan { 0, 0, -3.75045 },
+            OutTan { 0, 0, 3.75045 },
+    }
+    Rotation 2 { //rotacja 2
+        Linear, //typ liniowy oznacza, że obrót będzie interpolowany w linii prostej 
+        0: { 0, 0, 0, 1 }, //keyframes
+        1000: { -1.7, 0.601815, 0, 0.798635 },
+    }
+    Scaling 3 { // jak nazawa..
+        DontInterp, //typ przejścia
+        0: { 1, 1, 1 }, //wartości według osi X,Y,Z
+    }
+//КОНЕЦ ПАРАМЕТРОВ
+
+
+GeosetAnim { //animacje powierzchni 1
+    Alpha 4 { //przeźroczyste 
+        DontInterp, // typ przejścia
+        0: 0, //кадры
+        1000: 1,
+    }
+    Color 2 { //kolor(animowany) // np: budynki nieumarłych
+        Hermite,
+        0: { 1, 1, 1 },
+            InTan { 0, 0, 0 },
+            OutTan { 0, 0, 0 },
+        1: { 0.5, 0.5, 0.5 },
+            InTan { 0, 0, 0 },
+            OutTan { 0, 0, 0 },
+    }
+    DropShadow, //rzuca cień
+    GeosetId 0, //id geosetu
+}
+
+GeosetAnim { //animacja powier 2
+    static Alpha 0.8, //przeźroczystość nieanimowana
+    static Color { 0, 1, 0 }, //kolor nieanimowany
+}
+
+Bone "Chest" { // kość
+    //MA PARAMETRY OBIEKTU
+    GeosetId Multiple, //dotyczy każdego Geosetu
+    GeosetAnimId None,
+}
+
+Helper "Dummy01" { //pomocniczne poligony
+    //różni się od kości (bone) brakiem dodatkowych parametrów
+    //POSIADA PARAMETRY OBIEKTU
+}
+
+CollisionShape "cube1" { //forma przecięcia geometrycznego 1
+    //MA PARAMETRY OBIEKTU
+    Box, //куб
+    Vertices 2 { //ilość wierzchołków
+        { 57, 56, 55 },
+        { 1, 2, 3 },
+    }
+}
+
+CollisionShape "sphere1" { //forma przecięcia geometrycznego 2
+    //MA PARAMETRY OBIEKTU
+    Sphere, //Shpere
+    Vertices 1 { //Wierzchołki
+        { 12, 13, 4 },
+    }
+    BoundsRadius 666, //promień granicy OBIEKTu
+}
+
+
+Light "Omni01" { // źródła światła
+    //MA PARAMETRY OBIEKTU
+    Omnidirectional, // typ
+    static AttenuationStart 80, // start odległości od źródła światła, przy której światło zaczyna tracić intensywność.
+    static AttenuationEnd 200, //  końcowa faza odległości od źródła światła, przy której światło zaczyna tracić intensywność.
+    static Intensity 17, // intensywność
+    static Color { 0.87451, 0.984314, 1 }, // kolor
+    static AmbIntensity 0, // intensywność oświetlenia zewnętrznego
+    static AmbColor { 1, 1, 1 }, // kolor oświetlenia zewnętrznego
+    Visibility 2 { //widzialność 
+        DontInterp,
+        0: 0, 
+        1000: 1,
+    }
+}
+
+Attachment "Weapon Ref" { //(jakkolwiek to się nazywa. Chodzi o możliwość doczepienia np broni do modelu) 
+    //MA PARAMETRY OBIEKTU
+    AttachmentID 0, //Id attachmentu
+    Path "blablabla", //ścieżka
+    Visibility 3 { //widzialność
+        DontInterp,
+        0: 0, //
+        1000: 1,
+    }
+}
+
+PivotPoints 5 { // w mdl/mdx są to współrzędne 'punktu obrotu'. Odpowiedzialne są za obracanie oraz skalowanie modelu 3d
+                // tutaj mamy 5 'punktów obrotu' Jest to ważne, ponieważ punkt obrotu można zmienić,
+				// zmieniając właściwość „środeku” obiektu.
+    			// Zmiana punktu obrotu obiektu względem jego środka zmienia punkt,
+         		// wokół którego obraca się obracający się obiekt.
+				// Na przykład flaga nie obraca się względem środka, lecz względem krawędzi.
+    { 0, 0, 39.4571 }, //obiekt of id 0
+    { 14.1266, 15.1009, 4.38412 }, // id 1
+    { 15.0433, -18.3303, 6.96043 }, //itd.
+    { -21.5055, -18.0625, 6.96044 },
+    { -20.6731, 15.062, 3.06344 },
+    //dla każdego obiektu
+}
+
+ParticleEmitter "one" { //emitery cząsteczek (wszytskie dymy, ognie, efekty wizualne)
+    //MA PARAMETRY OBIEKTU
+    EmitterUsesMDL, //używa modelu mdl
+    EmitterUsesTGA, //używa tekstury TGA
+    //tutaj podam parametry animowane (w drugim - nie)
+    EmissionRate 2 { //częstotliwość
+        DontInterp,
+        0: 0,
+        1: 1,
+    }
+    Gravity 2 { // To jest siła grawitacji, która będzie oddziaływać na emiter.
+                //Ustawienie wartości dodatniej spowoduje, że cząsteczki będą opadać, a ujemnej – unosić się.
+        DontInterp,
+        0: 0,
+        1: 1,
+    }
+    Longitude 2 { //długość
+        DontInterp,
+        0: 0,
+        1: 1,
+    }
+    Latitude 2 { // wysokosć
+        DontInterp,
+        0: 0,
+        1: 1,
+    }
+    Visibility 2 { //widzialność
+        DontInterp,
+        0: 1,
+        1: 1,
+    }
+    Particle { //cząsteczki
+        LifeSpan 2 { //żywotność cząsteczek, Powtarzanie spowoduje cykl animowanej tekstury
+            DontInterp,
+            0: 0,
+            1: 1,
+        }
+        InitVelocity 2 { //prędkość 
+            DontInterp,
+            0: 0,
+            1: 1,
+        }
+        Path "blabla", //ścieżka
+    }
+}
+
+ParticleEmitter2 "SmallBlastDebris" { //drugi emiter cząsteczek
+    //MA PARAMETRY OBIEKTU
+    SortPrimsFarZ, //sortuj Z
+    Unshaded, //brak cienia
+    Unfogged, //brak mgły 
+    static Speed 440, // prędkość cząsteczek
+    static Variation 0, // różnorodność
+    static Latitude 55, // wysokość nad zemią
+    static Gravity 3, // grawitacja
+    // jeżeli nie statyczne do dynamiczne
+    Squirt, // spray? rozpraszanie się cząsteczek?
+    LifeSpan 0.71, // żywotność
+    EmissionRate 4 { // frekwencja 
+        DontInterp,
+        65033: 0,
+        65333: 22,
+        65433: 0,
+        122167: 0,
+    }
+    static Width 24, // szerokość
+    static Length 24, // długość
+    // jeżeli nie statyczne do dynamiczne
+    Blend,
+    Rows 1, // dzielą obraz na wiersze i kolumny. Jest to przeznaczone do animowanych tekstur.
+            // Przykład użycia znajduje się w teksturze: „Textures\Clouds8x8.blp”. Należy ustawić liczbę wierszy na 8, a kolumn na 8. Spowoduje to wygenerowanie odpowiednich cząsteczek i umożliwi animację.
+    Columns 1, // kolumny
+    //tak jest, jeśli tekstura składa się z ramek, np. 4x4
+    Head, //czoło cząsteczki (tak jak komety)
+    TailLength 0.1, //długość ogona
+    Time 0.7, //czas
+    XYQuad, // Powoduje, że cząsteczki stają się rodzajem ogona zorientowanego zgodnie z siatką XY.
+    
+    SegmentColor { //kolory segmentów (R,G,B) - zawsze trzy
+        Color { 0, 0.682353, 1 },
+        Color { 0, 0.309804, 0.658824 },
+        Color { 0, 0, 0 },
+    },
+    Alpha {255, 255, 0}, //przeźroczystość
+    ParticleScaling {5, 5, 5}, // skalowanie
+    
+    LifeSpanUVAnim {0, 0, 1}, //żywotność animowanej tekstury
+    DecayUVAnim {0, 0, 1}, // animowana tekstura zwłok
+    TailUVAnim {0, 0, 1}, //  podobnie ale ogon
+    TailDecayUVAnim {0, 0, 1}, //animowana tekstura zwłok
+    TextureID 0, // ID tekstury wiadomo
+}
+
+RibbonEmitter "BlizRibbon01" { //emiter wstążek
+    //MA PARAMETRY OBIEKTU
+    static HeightAbove 48.312,
+    static HeightBelow 48.372,
+    static Alpha 0.35, //przeźroczystość
+    static Color { 0, 0.635294, 1 }, //kolor
+    static TextureSlot 0, //miejsce na teksture
+    Visibility 2 { //widzialność 
+        DontInterp, //typ
+        0: 0, 
+        1000: 1,
+    }
+    EmissionRate 35,
+    LifeSpan 0.35, //время жизни
+    Gravity 2, //grawitacja
+    Rows 1, //patrz emiter cząsteczek
+    Columns 1, //patrz emiter cząsteczek
+    MaterialID 1, //id materiału
+}
+
+Camera "Camera01" { //kamera
+    Position { 403.317, -10.8177, 202.115 }, //pozycja obiektyw
+    FieldOfView 0.538016, // pole widzenia
+    FarClip 1000, // zakres renderowania
+    NearClip 8, // zakres renderowania
+    Target { //cel kamery
+        Position { -86.5748, -22.7399, 0.860381 }, // pozycja
+    }
+}
+
+//Źródła dźwięku 
+EventObject "SNDxDOLS" { //sound1, name - identyfikator ciągu, który można znaleźć w archiwum w pliku slk sounds
+    //MA PARAMETRY OBIEKTU
+  
+    EventTrack 1 { //Odtwarzanie
+        25,
+        500,
+    }
+}
+
+//Filson//
