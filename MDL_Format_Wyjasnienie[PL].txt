@@ -48,7 +48,7 @@ GlobalSequences 2 { // animacje globalne (bez nazwy) np powiewająca flaga itp.
 // 2D obrazy
 //=======================//
 Textures 1 { //Tekstury
-    Bitmap { // является изображением
+    Bitmap {
         Image "Textures\Goldmine.blp", //scieżka w archiwum
         WrapWidth, //szerokość oplatania modelu
         WrapHeight, //wysokość oplatania modelu
@@ -208,13 +208,12 @@ Geoset { //drugi geoset
         DontInterp, //typ przejścia
         0: { 1, 1, 1 }, //wartości według osi X,Y,Z
     }
-//КОНЕЦ ПАРАМЕТРОВ
 
 
 GeosetAnim { //animacje powierzchni 1
     Alpha 4 { //przeźroczyste 
         DontInterp, // typ przejścia
-        0: 0, //кадры
+        0: 0, //
         1000: 1,
     }
     Color 2 { //kolor(animowany) // np: budynki nieumarłych
@@ -442,4 +441,5 @@ EventObject "SNDxDOLS" { //sound1, name - identyfikator ciągu, który można zn
 }
 
 //Filson//
+
 
